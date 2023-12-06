@@ -156,6 +156,9 @@ class ExpandableDataTable extends StatefulWidget {
     ExpandableRow row,
   )? renderExpansionContent;
 
+  /// Allows to always have a expansion option on the row when creating custom expansion content using [renderExpansionContent]
+  bool alwaysEnableCustomExpansionContent;
+
   /// Display label provider for cell values that allows changing how a value
   /// is displayed but not how it behaves for e.g. sorting
   final String Function(String columTitle, Object value)?
@@ -174,6 +177,7 @@ class ExpandableDataTable extends StatefulWidget {
     this.renderEditDialog,
     this.renderCustomPagination,
     this.renderExpansionContent,
+    this.alwaysEnableCustomExpansionContent = false,
     this.createCellValueDisplayLabel,
   })  : assert(visibleColumnCount > 0),
         assert(
@@ -422,7 +426,8 @@ class _ExpandableDataTableState extends State<ExpandableDataTable> {
         ),
         child: custom_tile.ExpansionTile(
           tilePadding: context.expandableTheme.contentPadding,
-          showExpansionIcon: expansionCells.isNotEmpty,
+          showExpansionIcon: widget.alwaysEnableCustomExpansionContent ||
+              expansionCells.isNotEmpty,
           expansionIcon: context.expandableTheme.expansionIcon,
           collapsedBackgroundColor:
               currentRowColor ?? context.expandableTheme.rowColor,
@@ -465,7 +470,13 @@ class _ExpandableDataTableState extends State<ExpandableDataTable> {
     List<CellItem> expansionCells,
   ) {
     if (expansionCells.isEmpty) {
-      return [];
+      if (widget.alwaysEnableCustomExpansionContent) {
+        return [
+          widget.renderExpansionContent!(row),
+        ];
+      } else {
+        return [];
+      }
     } else if (widget.renderExpansionContent != null) {
       return [
         widget.renderExpansionContent!(row),
