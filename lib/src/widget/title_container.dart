@@ -34,7 +34,7 @@ class TitleContainer extends StatelessWidget {
       padding: const EdgeInsets.only(
         right: GeneralConstants.titlePadding,
       ),
-      child: Text(
+      child: element.value is Widget ? element.value :  Text(
         element.value.toString(),
         style: context.expandableTheme.rowTextStyle,
         maxLines: context.expandableTheme.rowTextMaxLines,

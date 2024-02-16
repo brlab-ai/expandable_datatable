@@ -389,7 +389,7 @@ class ExpansionTileState extends State<ExpansionTile>
         ExpansionTileTheme.of(context);
     final Color borderSideColor = _borderColor.value ?? Colors.transparent;
 
-    return Container(
+    return GestureDetector(child: Container(
       decoration: BoxDecoration(
         color: _backgroundColor.value ??
             expansionTileTheme.backgroundColor ??
@@ -407,7 +407,7 @@ class ExpansionTileState extends State<ExpansionTile>
             textColor: _headerColor.value,
             child: ListTile(
               contentPadding:
-                  widget.tilePadding ?? expansionTileTheme.tilePadding,
+              widget.tilePadding ?? expansionTileTheme.tilePadding,
               leading: widget.leading ?? _buildLeadingIcon(context),
               title: widget.title,
               dense: true,
@@ -426,7 +426,9 @@ class ExpansionTileState extends State<ExpansionTile>
           ),
         ],
       ),
-    );
+    ), onTap: (){
+      handleTap();
+    },);
   }
 
   @override
